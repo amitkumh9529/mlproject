@@ -10,7 +10,7 @@ import pymysql
 load_dotenv()
 
 host=os.getenv("host")
-user=os.getenv("user")
+username=os.getenv("username")
 password=os.getenv("password")
 db=os.getenv("db")
 
@@ -22,10 +22,15 @@ def read_sql_data():
         #Connected mydb to Database
         mydb=pymysql.connect(
             host=host,
-            user=user,
+            user=username,
             password=password,
             db=db
         )
-        logging.info("Connection Established", mydb)
+        logging.info("Connection Established")
+        df=pd.read_sql_query("select * from students", mydb)
+        print(df.head())
+
+        return df
+
     except Exception as ex:
-        raise CustomException(ex)
+        raise CustomException(ex, sys)
